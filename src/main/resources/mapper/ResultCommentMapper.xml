@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.my.blog.website.dao.ResultCommentMapper">
+    <resultMap id="ResultCommentResultMap" type="com.my.blog.website.model.Vo.questionaire.disc.ResultCommentVo">
+        <result column="tp" jdbcType="VARCHAR" property="tp" />
+        <result column="tp_name" jdbcType="VARCHAR" property="tpName" />
+        <result column="work_style" jdbcType="VARCHAR" property="workStyle" />
+        <result column="leader_style" jdbcType="VARCHAR" property="leaderStyle" />
+        <result column="team_style" jdbcType="VARCHAR" property="teamStyle" />
+        <result column="environment" jdbcType="VARCHAR" property="environment" />
+        <result column="limitations" jdbcType="VARCHAR" property="limitations" />
+    </resultMap>
+    <sql id="Base_Column_List">
+        tp, tp_name, work_style,leader_style,team_style,environment,limitations
+    </sql>
+    <select id="getResultComment"  parameterType="java.lang.String"  resultMap="ResultCommentResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from disc.chenshi_result_comment
+        where tp=#{tp,jdbcType=VARCHAR}
+        limit 1
+    </select>
+
+</mapper>

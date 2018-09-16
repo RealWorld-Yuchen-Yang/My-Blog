@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.my.blog.website.dao.AnsDimMapper">
+    <resultMap id="AnsDimResultMap" type="com.my.blog.website.model.Vo.questionaire.disc.AnsDimVo">
+        <result column="is_positive" jdbcType="BIT" property="isPositive" />
+        <result column="idx" jdbcType="INTEGER" property="idx" />
+        <result column="dim1" jdbcType="CHAR" property="dim1" />
+        <result column="dim2" jdbcType="CHAR" property="dim2" />
+        <result column="dim3" jdbcType="CHAR" property="dim3" />
+        <result column="dim4" jdbcType="CHAR" property="dim4" />
+    </resultMap>
+    <sql id="Base_Column_List">
+        is_positive,idx, dim1, dim2, dim3, dim4
+    </sql>
+    <select id="getAnsDimMap"  resultMap="AnsDimResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from disc.chenshi_ans_dim_mapping
+    </select>
+
+</mapper>

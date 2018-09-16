@@ -1,0 +1,247 @@
+<!doctype html>
+<html>
+<head>
+    <title>DISC Personality Test</title>
+    <style>
+        body, table {
+            font-family: verdana, arial, sans-serif;
+            font-size: 1em;
+        }
+
+        input {
+            background-color: #eee;
+            line-height: 1.5em;
+        }
+
+        thead {
+            background-color: #666;
+            color: #fff;
+            line-height: 2em;
+            padding: 0.2em;
+        }
+
+        tfoot {
+            background-color: #999;
+            color: #fff;
+        }
+
+        td {
+            padding: 0.2em;
+        }
+
+        caption {
+            font-size: 2em;
+        }
+
+        input[type=radio] {
+            border-radius: 0;
+            width: 2.2em;
+            height: 2.2em;
+        }
+
+        .btn {
+            background-color: #eee;
+            line-height: 2em;
+            padding: 0.1em 0.6em;
+            margin: 0.2em;
+            font-size: 1.5em;
+            font-weight: bold;
+            border-radius: 0.3em;
+        }
+
+        .dark {
+            background-color: #eee;
+        }
+
+        .first {
+            border-top: solid 0.2em #000;
+        }
+
+        .badge {
+            position: relative;
+            line-height: 3em;
+            border: solid #999 1px;
+            text-align: center;
+            font-size: 2em;
+        }
+
+        .badge[data-badge]:after {
+            content: attr(data-badge);
+            position: absolute;
+            top: 1px;
+            left: 1px;
+            font-size: .7em;
+            background: #9af;
+            color: white;
+            width: 18px;
+            height: 18px;
+            text-align: center;
+            line-height: 18px;
+            box-shadow: 0 0 1px #333;
+        }
+    </style>
+</head>
+<body>
+<form method='post' action='result.php'>
+    <div>
+        Choose one <b>MOST</b> and one <b>LEAST</b> in each of the 28 groups of words.
+    </div>
+    <table>
+        <caption>DISC Personality Test</caption>
+        <thead>
+        <tr>
+            <?php for($i=0;$i<$cols;++$i):?>
+            <th>No</th>
+            <th>term</th>
+            <th>Most</th>
+            <th>Least</th>
+            <?php endfor;?>
+        </tr>
+        </thead>
+        <tbody>
+        <?php
+for($i=0;$i<$rows;++$i){
+echo "<tr".($i%2==0?" class='dark'":"").">";
+        for($j=0;$j<$cols;++$j){
+        for($n=0;$n<4;++$n){
+        if($j>0 && $n==0){
+        echo "
+        <tr
+        ".($i%2==0?" class='dark'":"").">";
+        }elseif($j==0){
+        echo "
+        <th rowspan='$cols'
+        "
+        .($j==0?" class='first'":"").">"
+        .($i+$n*$rows+1)
+        ."</th>";
+        }
+        echo "
+        <td
+        ".($j==0?" class='first'":"").">
+        {$data[$cols*($i+$n*$rows)+$j]->term}
+        </td>
+        <td
+        ".($j==0?" class='first'":"").">
+        <input type='radio'
+               name='m[".($i+$n*$rows)."]'
+               value='{$data[$cols*($i+$n*$rows)+$j]->most}'
+               required/>"
+        .($show_mark?$data[$cols*($i+$n*$rows)+$j]->most:'')
+        ."</td>
+        <td
+        ".($j==0?" class='first'":"").">
+        <input type='radio'
+               name='l[".($i+$n*$rows)."]'
+               value='{$data[$cols*($i+$n*$rows)+$j]->least}'
+               required/>"
+        .($show_mark?$data[$cols*($i+$n*$rows)+$j]->least:'')
+        ."</td>";
+        }
+        echo "</tr>";
+        }
+        }
+        ?>
+        </tbody>
+        <tfoot>
+        <tr>
+            <th colspan='16'>
+                <input type='submit' value='process' class='btn'/>
+            </th>
+        </tr>
+        </tfoot>
+    </table>
+</form>
+</body>
+
+
+<script>
+    $('a.color').click(function(){
+        var color=$(this).attr('data-value');
+        document.getElementById('disc_css').href='css/w3-theme-'+color+'.css';
+        $.post('js/change.color.php',{'color':color});
+    });
+
+    $('a.color_graph').click(function(){
+        var color=$(this).attr('data-value');
+        document.getElementById('disc_css').href='css/w3-theme-'+color+'.css';
+        data={
+            'color':color,
+            's1':$('#s1').val(),
+            'i1':$('#i1').val(),
+            'p1':$('#p1').val(),
+            's2':$('#s2').val(),
+            'i2':$('#i2').val(),
+            'p2':$('#p2').val(),
+            's3':$('#s3').val(),
+            'i3':$('#i3').val(),
+            'p3':$('#p3').val(),
+        };
+        $.post('js/change.color.php',data,function(result){
+            var r=Math.random()*1000;
+            $('#graph1').attr('src','img/graph.php?g=1&v='+r);
+            $('#graph2').attr('src','img/graph.php?g=2&v='+r);
+            $('#graph3').attr('src','img/graph.php?g=3&v='+r);
+        });
+    });
+
+    $('input:radio').on('click',function(){
+        var m=$(this).attr('id');
+        //-- Check for
+        if($('#'+(m.slice(0,1)=='m'?'l':'m')+'_'+m.slice(2)).is(':checked')){
+            $('#msg').html('You cannot select both of `most` and `least` choice in the same term');
+            $('#warning').show();
+            $(this).removeAttr('checked');
+        }
+    });
+
+    // Questionnaire Validation
+    $('form[name="disc"] input[type="submit"]').on('click',function(e){
+        var answered = 0;
+        // Remove incomplete class from all questions
+        $('form[name="disc"] td, form[name="disc"] th').removeClass('incomplete');
+        // Check does we have 28 MOST and LEAST options selected
+        for ( i=1; i<29; i++ ) {
+            // count answered questions
+            if ( $('form[name="disc"] input[type="radio"][name^="m['+i+']"]:checked').length == 1 && $('form[name="disc"] input[type="radio"][name^="l['+i+']"]:checked').length == 1 ) {
+                answered++;
+            } else {
+                $('form[name="disc"] input[type="radio"][name^="m['+i+']"]').each(function(i){
+                    // Traverse to previous 2 siblings only for first control
+                    if ( i == 0 ) {
+                        $(this).parent().addClass('incomplete').prev().addClass('incomplete').prev().addClass('incomplete');
+                    } else {
+                        $(this).parent().addClass('incomplete').prev().addClass('incomplete');
+                    }
+                });
+            }
+        }
+        if ( answered != 28 ) {
+            // Prevent form submission
+            e.preventDefault();
+            // Display message
+            $('#msg').html('You have answered '+answered+' out of 28 questions.<br>\nPlease review questionnaire and answer marked questions.');
+            $('#warning').show();
+        }
+    });
+
+    function openTabs(evt, tabName) {
+        var i, x, tablinks;
+        x = document.getElementsByClassName("tabs");
+        for (i = 0; i < x.length; i++) {
+            x[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("tablink");
+        for (i = 0; i < x.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" w3-border-theme", "");
+        }
+        document.getElementById(tabName).style.display = "block";
+        evt.currentTarget.firstElementChild.className += " w3-border-theme";
+    }
+
+
+</script>>
+
+
+
+</html>

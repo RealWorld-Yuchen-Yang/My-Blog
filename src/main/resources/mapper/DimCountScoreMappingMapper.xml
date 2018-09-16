@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.my.blog.website.dao.DimCountScoreMappingMapper">
+    <resultMap id="DimCountScoreMappingResultMap" type="com.my.blog.website.model.Vo.questionaire.disc.DimCountScoreMappingVo">
+        <result column="dimension" jdbcType="CHAR" property="dimension" />
+        <result column="count" jdbcType="INTEGER" property="count" />
+        <result column="raw_score" jdbcType="DECIMAL" property="rawScore" />
+    </resultMap>
+    <sql id="Base_Column_List">
+        dimension,count,raw_score
+    </sql>
+    <select id="selectByDimAndCount" parameterType="java.util.Map" resultMap="DimCountScoreMappingResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from disc.chenshi_count_score_mapping
+        where dimension = #{dimension,jdbcType=CHAR} and count= #{count,jdbcType=INTEGER}
+    </select>
+
+</mapper>

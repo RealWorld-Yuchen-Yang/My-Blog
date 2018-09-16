@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.my.blog.website.dao.RawAnswerMapper">
+    <resultMap id="RawAnswerResultMap" type="com.my.blog.website.model.Vo.questionaire.disc.RawAnswerVo">
+        <result column="wechat_id" jdbcType="VARCHAR" property="wechatId" />
+        <result column="answer1" jdbcType="VARCHAR" property="answer1" />
+        <result column="answer2" jdbcType="VARCHAR" property="answer2" />
+        <result column="answer3" jdbcType="VARCHAR" property="answer3" />
+        <result column="answer4" jdbcType="VARCHAR" property="answer4" />
+        <result column="answer5" jdbcType="VARCHAR" property="answer5" />
+        <result column="answer6" jdbcType="VARCHAR" property="answer6" />
+        <result column="answer7" jdbcType="VARCHAR" property="answer7" />
+        <result column="answer8" jdbcType="VARCHAR" property="answer8" />
+        <result column="answer9" jdbcType="VARCHAR" property="answer9" />
+        <result column="answer10" jdbcType="VARCHAR" property="answer10" />
+        <result column="answer11" jdbcType="VARCHAR" property="answer11" />
+        <result column="answer12" jdbcType="VARCHAR" property="answer12" />
+        <result column="answer13" jdbcType="VARCHAR" property="answer13" />
+        <result column="answer14" jdbcType="VARCHAR" property="answer14" />
+        <result column="answer15" jdbcType="VARCHAR" property="answer15" />
+        <result column="answer16" jdbcType="VARCHAR" property="answer16" />
+        <result column="answer17" jdbcType="VARCHAR" property="answer17" />
+        <result column="answer18" jdbcType="VARCHAR" property="answer18" />
+        <result column="answer19" jdbcType="VARCHAR" property="answer19" />
+        <result column="answer20" jdbcType="VARCHAR" property="answer20" />
+        <result column="answer21" jdbcType="VARCHAR" property="answer21" />
+        <result column="answer22" jdbcType="VARCHAR" property="answer22" />
+        <result column="answer23" jdbcType="VARCHAR" property="answer23" />
+        <result column="answer24" jdbcType="VARCHAR" property="answer24" />
+    </resultMap>
+    <sql id="Base_Column_List">
+        wechat_id,answer1,answer2,answer3,answer4,answer5,answer6,answer7,answer8,answer9,answer10,answer11,answer12
+        ,answer13,answer14,answer15,answer16,answer17,answer18,answer19,answer20,answer21,answer22,answer23,answer24
+    </sql>
+    <select id="selectByWechatId" parameterType="java.lang.String" resultMap="RawAnswerResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from disc.chenshi_user_answers
+        where wechat_id = #{wechatId, jdbcType=VARCHAR}
+    </select>
+
+</mapper>
