@@ -6,5 +6,9 @@ import org.springframework.stereotype.Component;
 
 @Component
 public interface RawAnswerMapper {
+
+    int insert(RawAnswerVo rawAnswerVo);
+
+
     RawAnswerVo selectByWechatId(String wechatId);
 }

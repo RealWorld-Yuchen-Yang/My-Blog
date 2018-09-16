@@ -37,6 +37,18 @@
         <include refid="Base_Column_List" />
         from disc.chenshi_user_answers
         where wechat_id = #{wechatId, jdbcType=VARCHAR}
+        limit 1
     </select>
+
+    <insert id="insert" parameterType="com.my.blog.website.model.Vo.questionaire.disc.RawAnswerVo" useGeneratedKeys="true" keyProperty="id">
+        insert into disc.chenshi_user_answers (id,wechat_id,answer1,answer2,answer3,answer4,answer5,answer6,answer7,answer8,answer9,answer10,answer11,answer12
+        ,answer13,answer14,answer15,answer16,answer17,answer18,answer19,answer20,answer21,answer22,answer23,answer24)
+        values (#{id,jdbcType=BIGINT},#{wechatId,jdbcType=VARCHAR},
+        #{answer1,jdbcType=VARCHAR},#{answer2,jdbcType=VARCHAR},#{answer3,jdbcType=VARCHAR},#{answer4,jdbcType=VARCHAR},#{answer5,jdbcType=VARCHAR},#{answer6,jdbcType=VARCHAR},
+        #{answer7,jdbcType=VARCHAR},#{answer8,jdbcType=VARCHAR},#{answer9,jdbcType=VARCHAR},#{answer10,jdbcType=VARCHAR},#{answer11,jdbcType=VARCHAR},#{answer12,jdbcType=VARCHAR},
+        #{answer13,jdbcType=VARCHAR},#{answer14,jdbcType=VARCHAR},#{answer15,jdbcType=VARCHAR},#{answer16,jdbcType=VARCHAR},#{answer17,jdbcType=VARCHAR},#{answer18,jdbcType=VARCHAR},
+        #{answer19,jdbcType=VARCHAR},#{answer20,jdbcType=VARCHAR},#{answer21,jdbcType=VARCHAR},#{answer22,jdbcType=VARCHAR},#{answer23,jdbcType=VARCHAR},#{answer24,jdbcType=VARCHAR})
+    </insert>
+
 
 </mapper>

@@ -1,13 +1,7 @@
 package com.my.blog.website.service.impl.questionaire.disc;
 
-import com.my.blog.website.dao.AnsDimMapper;
-import com.my.blog.website.dao.DimCountScoreMappingMapper;
-import com.my.blog.website.dao.RawAnswerMapper;
-import com.my.blog.website.dao.ResultCommentMapper;
-import com.my.blog.website.model.Vo.questionaire.disc.AnsDimVo;
-import com.my.blog.website.model.Vo.questionaire.disc.DimCountScoreMappingVo;
-import com.my.blog.website.model.Vo.questionaire.disc.RawAnswerVo;
-import com.my.blog.website.model.Vo.questionaire.disc.ResultCommentVo;
+import com.my.blog.website.dao.*;
+import com.my.blog.website.model.Vo.questionaire.disc.*;
 import com.my.blog.website.service.questionaire.disc.IQuestionaireDiscService;
 import org.springframework.stereotype.Service;
 
@@ -35,6 +29,21 @@ public class QuestionaireDiscImpl implements IQuestionaireDiscService {
 
     @Resource
     private ResultCommentMapper resultCommentMapper;
+
+    @Resource
+    private DiscQuestionMapper discQuestionMapper;
+
+    @Override
+    public List<DiscQuestionVo> getQuestions() {
+        return discQuestionMapper.selectAllQuestions();
+    }
+
+    @Override
+    public void answerQuestions(RawAnswerVo rawAnswerVo) {
+        int affectedRows = rawAnswerMapper.insert(rawAnswerVo);
+        System.out.println("answered ("+affectedRows+")question, with answer: "+rawAnswerVo.toString());
+
+    }
 
     public ResultCommentVo getResultComment(String wechatId) {
 
@@ -85,7 +94,6 @@ public class QuestionaireDiscImpl implements IQuestionaireDiscService {
 
         return resultCommentVo;
     }
-
 
     private char[] mapAnsToDim(final Map ansDimMap, char[] ansArr, boolean isPositive) {
         char[] resDimArr = new char[NUM_OF_Q];

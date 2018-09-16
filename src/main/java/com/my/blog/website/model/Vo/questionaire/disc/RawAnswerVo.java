@@ -236,4 +236,35 @@ public class RawAnswerVo {
     public void setAnswer24(String answer24) {
         this.answer24 = answer24;
     }
+
+    @Override
+    public String toString() {
+        return
+                "(" + id +
+                ",'" + wechatId + '\'' +
+                ",'" + answer1 + '\'' +
+                ",'" + answer2 + '\'' +
+                ",'" + answer3 + '\'' +
+                ",'" + answer4 + '\'' +
+                ",'" + answer5 + '\'' +
+                ",'" + answer6 + '\'' +
+                ",'" + answer7 + '\'' +
+                ",'" + answer8 + '\'' +
+                ",'" + answer9 + '\'' +
+                ",'" + answer10 + '\'' +
+                ",'" + answer11 + '\'' +
+                ",'" + answer12 + '\'' +
+                ",'" + answer13 + '\'' +
+                ",'" + answer14 + '\'' +
+                ",'" + answer15 + '\'' +
+                ",'" + answer16 + '\'' +
+                ",'" + answer17 + '\'' +
+                ",'" + answer18 + '\'' +
+                ",'" + answer19 + '\'' +
+                ",'" + answer20 + '\'' +
+                ",'" + answer21 + '\'' +
+                ",'" + answer22 + '\'' +
+                ",'" + answer23 + '\'' +
+                ",'" + answer24 + '\''+")" ;
+    }
 }

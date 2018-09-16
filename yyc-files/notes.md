@@ -3,4 +3,7 @@
     mysqldump -u USER_NAME -p DATABASE_NAME > FULL_PATH/FILE.sql
   1.2 导出某个表 
     mysqldump -u USER_NAME -p DATABASE_NAME TABLE_NAME > FULL_PATH/FILE.sql
+ 
+2. disable mysql safe update mode 
+    SET SQL_SAFE_UPDATES = 0;
     

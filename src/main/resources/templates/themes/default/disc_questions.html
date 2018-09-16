@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!--<html>-->
+<head>
+    <title>DISC Personality Test</title>
+    <!--<style>-->
+    <!--body, table {-->
+    <!--font-family: verdana, arial, sans-serif;-->
+    <!--font-size: 1em;-->
+    <!--}-->
+
+    <!--input {-->
+    <!--background-color: #eee;-->
+    <!--line-height: 1.5em;-->
+    <!--}-->
+
+    <!--thead {-->
+    <!--background-color: #666;-->
+    <!--color: #fff;-->
+    <!--line-height: 2em;-->
+    <!--padding: 0.2em;-->
+    <!--}-->
+
+    <!--tfoot {-->
+    <!--background-color: #999;-->
+    <!--color: #fff;-->
+    <!--}-->
+
+    <!--td {-->
+    <!--padding: 0.2em;-->
+    <!--}-->
+
+    <!--caption {-->
+    <!--font-size: 2em;-->
+    <!--}-->
+
+    <!--input[type=radio] {-->
+    <!--border-radius: 0;-->
+    <!--width: 2.2em;-->
+    <!--height: 2.2em;-->
+    <!--}-->
+
+    <!--.btn {-->
+    <!--background-color: #eee;-->
+    <!--line-height: 2em;-->
+    <!--padding: 0.1em 0.6em;-->
+    <!--margin: 0.2em;-->
+    <!--font-size: 1.5em;-->
+    <!--font-weight: bold;-->
+    <!--border-radius: 0.3em;-->
+    <!--}-->
+
+    <!--.dark {-->
+    <!--background-color: #eee;-->
+    <!--}-->
+
+    <!--.first {-->
+    <!--border-top: solid 0.2em #000;-->
+    <!--}-->
+
+    <!--.badge {-->
+    <!--position: relative;-->
+    <!--line-height: 3em;-->
+    <!--border: solid #999 1px;-->
+    <!--text-align: center;-->
+    <!--font-size: 2em;-->
+    <!--}-->
+
+    <!--.badge[data-badge]:after {-->
+    <!--content: attr(data-badge);-->
+    <!--position: absolute;-->
+    <!--top: 1px;-->
+    <!--left: 1px;-->
+    <!--font-size: .7em;-->
+    <!--background: #9af;-->
+    <!--color: white;-->
+    <!--width: 18px;-->
+    <!--height: 18px;-->
+    <!--text-align: center;-->
+    <!--line-height: 18px;-->
+    <!--box-shadow: 0 0 1px #333;-->
+    <!--}-->
+    <!--</style>-->
+</head>
+<body>
+
+
+<div>
+    <h1>Questions</h1>
+
+    <div th:if="${discQuestions}">
+        <ol class="dis-question-list">
+            <th:block th:each="question :${discQuestions}">
+                <li th:id="'li-question-'+${question.questionNumber}+${question.lineNumber}" class="comment-body comment-parent comment-odd">
+                    <div th:id="'comment-'+${question.questionNumber}+${question.lineNumber}">
+                        <!--<div class="comment-view" onclick="">-->
+                            <!--<div class="comment-header">-->
+                                <!--&lt;!&ndash;设置get请求的参数&ndash;&gt;-->
+                                <!--<img class="avatar"-->
+                                     <!--th:src="@{${commons.gravatar(comment.mail)}(s='80',r='G',d='')}"-->
+                                     <!--th:title="${comment.author}"-->
+                                     <!--width="80" height="80"/>-->
+                                <!--<span class="comment-author">-->
+                                <!--<a href="##" rel="external nofollow"-->
+                                   <!--th:text="${comment.author}"></a>-->
+                            <!--</span>-->
+                            <!--</div>-->
+                            <!--<div class="comment-content">-->
+                                <!--<span class="comment-author-at"></span>-->
+                                <!--<p th:utext="${commons.article(comment.content)}"></p>-->
+                            <!--</div>-->
+                            <!--<div class="comment-meta">-->
+                                <!--<time class="comment-time" th:text="${commons.fmtdate(comment.created)}"></time>-->
+                                <!--<span class="comment-reply">-->
+                            <!--</span>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <div class="post-list-item" th:text="'questionNumber: '+${question.questionNumber}"><br/></div>
+                        <div class="post-list-item" th:text="'questionContent: '+${question.questionContent}"><br/></div>
+                        <div class="post-list-item" th:text="'lineNumber: '+${question.lineNumber}"><br/></div>
+                        <div class="post-list-item" th:text="'lineContent: '+${question.lineContent}"><br/></div>
+                        <div class="post-list-item" th:text="'most: '+${question.most}"><br/></div>
+                        <div class="post-list-item" th:text="'least: '+${question.least}"><br/></div>
+                        <br/>
+                    </div>
+                </li>
+            </th:block>
+        </ol>
+        <!--<div class="lists-navigator clearfix">-->
+            <!--<ol class="page-navigator">-->
+                <!--<th:block th:if="${discQuestions.hasPreviousPage}">-->
+                    <!--<li class="prev"><a th:href="'?cp='+${discQuestions.prePage}+'#comments'">←</a></li>-->
+                <!--</th:block>-->
+                <!--<th:block th:each="navIndex : ${discQuestions.navigatepageNums}">-->
+                    <!--<li th:class="${discQuestions.pageNum}==${navIndex}?'current':''"><a-->
+                            <!--th:href="'?cp='+${navIndex}+'#disc_questions'" th:text="${navIndex}"></a>-->
+                    <!--</li>-->
+                <!--</th:block>-->
+                <!--<th:block th:if="${discQuestions.hasNextPage}">-->
+                    <!--<li class="next"><a th:href="'?cp='+${discQuestions.nextPage}+'#disc_questions'">→</a></li>-->
+                <!--</th:block>-->
+            <!--</ol>-->
+
+        <!--</div>-->
+    </div>
+</div>
+</body>
+</html>

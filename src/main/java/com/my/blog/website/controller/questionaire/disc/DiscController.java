@@ -1,4 +1,4 @@
-package com.my.blog.website.controller.admin;
+package com.my.blog.website.controller.questionaire.disc;
 
 import com.my.blog.website.controller.BaseController;
 import com.my.blog.website.model.Vo.questionaire.disc.RawAnswerVo;
@@ -19,9 +19,22 @@ public class DiscController extends BaseController{
     @Resource
     private IQuestionaireDiscService questionaireDiscService;
 
+
+    @PostMapping(value="/getQuestions")
+    public String getQuestions(Model model){
+        Object discQuestions = questionaireDiscService.getQuestions();
+        model.addAttribute("discQuestions",discQuestions);
+        return render("disc_questions");
+    }
+
     @PostMapping(value="/answerQuestions")
-    public void answerQuestions(RawAnswerVo rawAnswerVo){
-//        questionaireDiscService.insert(rawAnswerVo);
+    public String answerQuestions(RawAnswerVo rawAnswerVo){
+        //Assuming that all answers to all questions have two characters, e.g. "mostleast"
+
+        //now just faking the wechat_ids until acutally pluged into wechat
+        System.out.println("Input Answers is: "+rawAnswerVo);
+        questionaireDiscService.answerQuestions(rawAnswerVo);
+        return render("confirm_page");
     }
 
     @PostMapping(value="/getProcessedAnswer")

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.my.blog.website.dao.DiscQuestionMapper">
+    <resultMap id="DiscQuestionResultMap" type="com.my.blog.website.model.Vo.questionaire.disc.DiscQuestionVo">
+        <result column="question_number" jdbcType="INTEGER" property="questionNumber" />
+        <result column="question_content" jdbcType="VARCHAR" property="questionContent" />
+        <result column="line_number" jdbcType="INTEGER" property="lineNumber" />
+        <result column="line_content" jdbcType="VARCHAR" property="lineContent" />
+        <result column="most" jdbcType="CHAR" property="most" />
+        <result column="least" jdbcType="CHAR" property="least" />
+    </resultMap>
+    <sql id="Base_Column_List">
+        question_number, question_content, line_number, line_content, most, least
+    </sql>
+    <select id="selectAllQuestions"  resultMap="DiscQuestionResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from disc.chenshi_questions
+    </select>
+
+</mapper>
