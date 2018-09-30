@@ -1,8 +1,13 @@
 package com.my.blog.website.service.impl.questionaire.disc;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.my.blog.website.dao.*;
+import com.my.blog.website.model.Vo.ContentVoExample;
 import com.my.blog.website.model.Vo.questionaire.disc.*;
 import com.my.blog.website.service.questionaire.disc.IQuestionaireDiscService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -15,6 +20,8 @@ import java.util.stream.Collectors;
 
 @Service
 public class QuestionaireDiscImpl implements IQuestionaireDiscService {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(QuestionaireDiscImpl.class);
 
     private final int NUM_OF_Q = 24;
 
@@ -34,14 +41,52 @@ public class QuestionaireDiscImpl implements IQuestionaireDiscService {
     private DiscQuestionMapper discQuestionMapper;
 
     @Override
-    public List<DiscQuestionVo> getQuestions() {
-        return discQuestionMapper.selectAllQuestions();
+    public PageInfo<DiscQuestionVo> getQuestions(Integer p, Integer limit) {
+
+        LOGGER.debug("Enter getQuestions method");
+        List<DiscQuestionItemVo> data = discQuestionMapper.selectAllQuestions();
+        List<DiscQuestionVo> questions = data.stream()
+                .collect(Collectors.groupingBy(DiscQuestionItemVo::getQuestionNumber, Collectors.toList()))
+                .entrySet().stream()
+                .map(entry -> {
+                    DiscQuestionVo discQuestion = new DiscQuestionVo();
+                    final Integer qN = entry.getKey();
+                    final List<DiscQuestionItemVo> items = (List<DiscQuestionItemVo>) entry.getValue();
+                    final DiscQuestionItemVo item1 = items.get(0);
+                    discQuestion.setQuestionNumber(qN);
+                    discQuestion.setQuestionContent(item1.getQuestionContent());
+                    final List<LineItemVo> lineItems = items.stream().map(discQuestionItemVo -> {
+                        LineItemVo itemVo = new LineItemVo();
+                        itemVo.setLineContent(discQuestionItemVo.getLineContent());
+                        itemVo.setLineNumber(discQuestionItemVo.getLineNumber());
+                        itemVo.setMost(discQuestionItemVo.getMost());
+                        itemVo.setLeast(discQuestionItemVo.getLeast());
+                        return itemVo;
+                    }).collect(Collectors.toList());
+                    discQuestion.setLineItemList(lineItems);
+                    discQuestion.setQuestionNumber(entry.getKey());
+
+                    return discQuestion;
+                }).collect(Collectors.toList());
+        PageHelper.startPage(p, limit);
+        PageInfo pageInfo = new PageInfo(questions);
+//        pageInfo.setHasNextPage(limit*p<24);
+//        pageInfo.setNextPage(p+1);
+//        pageInfo.set
+//        pageInfo.setNavigatePages(3);
+        LOGGER.debug("Exit getContents method");
+        return pageInfo;
+    }
+
+    @Override
+    public PageInfo<DiscQuestionItemVo> getQuestions() {
+        return null;
     }
 
     @Override
     public void answerQuestions(RawAnswerVo rawAnswerVo) {
         int affectedRows = rawAnswerMapper.insert(rawAnswerVo);
-        System.out.println("answered ("+affectedRows+")question, with answer: "+rawAnswerVo.toString());
+        System.out.println("answered (" + affectedRows + ")question, with answer: " + rawAnswerVo.toString());
 
     }
 
@@ -58,37 +103,34 @@ public class QuestionaireDiscImpl implements IQuestionaireDiscService {
         char[] mappedPosAns = mapAnsToDim(posAnsDimMap, posAnsArr, true);
         char[] mappedNegAns = mapAnsToDim(negAnsDimMap, negAnsArr, false);
 
-        int dSum = charCount(mappedPosAns,'D')-charCount(mappedNegAns,'D');
-        int iSum = charCount(mappedPosAns,'I')-charCount(mappedNegAns,'I');
-        int sSum = charCount(mappedPosAns,'S')-charCount(mappedNegAns,'S');
-        int cSum = charCount(mappedPosAns,'C')-charCount(mappedNegAns,'C');
+        int dSum = charCount(mappedPosAns, 'D') - charCount(mappedNegAns, 'D');
+        int iSum = charCount(mappedPosAns, 'I') - charCount(mappedNegAns, 'I');
+        int sSum = charCount(mappedPosAns, 'S') - charCount(mappedNegAns, 'S');
+        int cSum = charCount(mappedPosAns, 'C') - charCount(mappedNegAns, 'C');
 
-        DimCountScoreMappingVo dDimCountScoreMappingVo = dimCountScoreMappingMapper.selectByDimAndCount('D',dSum);
-        DimCountScoreMappingVo iDimCountScoreMappingVo = dimCountScoreMappingMapper.selectByDimAndCount('I',iSum);
-        DimCountScoreMappingVo sDimCountScoreMappingVo = dimCountScoreMappingMapper.selectByDimAndCount('S',sSum);
-        DimCountScoreMappingVo cDimCountScoreMappingVo = dimCountScoreMappingMapper.selectByDimAndCount('C',cSum);
+        DimCountScoreMappingVo dDimCountScoreMappingVo = dimCountScoreMappingMapper.selectByDimAndCount('D', dSum);
+        DimCountScoreMappingVo iDimCountScoreMappingVo = dimCountScoreMappingMapper.selectByDimAndCount('I', iSum);
+        DimCountScoreMappingVo sDimCountScoreMappingVo = dimCountScoreMappingMapper.selectByDimAndCount('S', sSum);
+        DimCountScoreMappingVo cDimCountScoreMappingVo = dimCountScoreMappingMapper.selectByDimAndCount('C', cSum);
 
-        List<DimCountScoreMappingVo> dimScoreList = Arrays.asList(new DimCountScoreMappingVo[]{dDimCountScoreMappingVo,iDimCountScoreMappingVo,sDimCountScoreMappingVo,cDimCountScoreMappingVo});
+        List<DimCountScoreMappingVo> dimScoreList = Arrays.asList(new DimCountScoreMappingVo[]{dDimCountScoreMappingVo, iDimCountScoreMappingVo, sDimCountScoreMappingVo, cDimCountScoreMappingVo});
 
         final StringBuilder sb = new StringBuilder();
         dimScoreList.stream().filter(dimScore ->
-            dimScore != null && dimScore.getRawScore().longValue()>0
+                dimScore != null && dimScore.getRawScore().longValue() > 0
         ).sorted((dimScore1, dimScore2) -> {
-                long diff = dimScore1.getRawScore().longValue() - dimScore2.getRawScore().longValue();
-                if(diff>0){
-                    return -1;
-                }
-                else if(diff<0){
-                    return 1;
-                }
-                else{
-                    return 0;
-                }
+            long diff = dimScore1.getRawScore().longValue() - dimScore2.getRawScore().longValue();
+            if (diff > 0) {
+                return -1;
+            } else if (diff < 0) {
+                return 1;
+            } else {
+                return 0;
+            }
         }).limit(3).forEach(dimScore -> sb.append(dimScore.getDimension()));
 
 
-
-        final String tp =  sb.toString();
+        final String tp = sb.toString();
         resultCommentVo = resultCommentMapper.getResultComment(tp);
 
 
@@ -173,10 +215,10 @@ public class QuestionaireDiscImpl implements IQuestionaireDiscService {
     }
 
     private int charCount(char[] dimArr, final char targetDim) {
-        int result=0;
+        int result = 0;
 
-        for(int i=0;i<dimArr.length;i++){
-            if(dimArr[i]==targetDim){
+        for (int i = 0; i < dimArr.length; i++) {
+            if (dimArr[i] == targetDim) {
                 result++;
             }
         }

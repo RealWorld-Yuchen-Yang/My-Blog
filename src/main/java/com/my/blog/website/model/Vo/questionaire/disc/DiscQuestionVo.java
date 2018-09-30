@@ -1,13 +1,11 @@
 package com.my.blog.website.model.Vo.questionaire.disc;
 
+import java.util.List;
+
 public class DiscQuestionVo {
     private int questionNumber;
     private String questionContent;
-    private int lineNumber;
-    private String lineContent;
-    private char most;
-    private char least;
-
+    private List<LineItemVo> lineItemList;
 
     public int getQuestionNumber() {
         return questionNumber;
@@ -25,35 +23,11 @@ public class DiscQuestionVo {
         this.questionContent = questionContent;
     }
 
-    public int getLineNumber() {
-        return lineNumber;
+    public List<LineItemVo> getLineItemList() {
+        return lineItemList;
     }
 
-    public void setLineNumber(int lineNumber) {
-        this.lineNumber = lineNumber;
-    }
-
-    public String getLineContent() {
-        return lineContent;
-    }
-
-    public void setLineContent(String lineContent) {
-        this.lineContent = lineContent;
-    }
-
-    public char getMost() {
-        return most;
-    }
-
-    public void setMost(char most) {
-        this.most = most;
-    }
-
-    public char getLeast() {
-        return least;
-    }
-
-    public void setLeast(char least) {
-        this.least = least;
+    public void setLineItemList(List<LineItemVo> lineItemList) {
+        this.lineItemList = lineItemList;
     }
 }

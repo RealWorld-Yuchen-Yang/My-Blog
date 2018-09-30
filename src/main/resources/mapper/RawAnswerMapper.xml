@@ -37,6 +37,7 @@
         <include refid="Base_Column_List" />
         from disc.chenshi_user_answers
         where wechat_id = #{wechatId, jdbcType=VARCHAR}
+        order by id desc
         limit 1
     </select>
 

@@ -11,12 +11,10 @@ import com.my.blog.website.model.Bo.RestResponseBo;
 import com.my.blog.website.model.Vo.CommentVo;
 import com.my.blog.website.model.Vo.ContentVo;
 import com.my.blog.website.model.Vo.MetaVo;
-import com.my.blog.website.model.Vo.questionaire.disc.DiscQuestionItemVo;
 import com.my.blog.website.service.ICommentService;
 import com.my.blog.website.service.IContentService;
 import com.my.blog.website.service.IMetaService;
 import com.my.blog.website.service.ISiteService;
-import com.my.blog.website.service.questionaire.disc.IQuestionaireDiscService;
 import com.my.blog.website.utils.IPKit;
 import com.my.blog.website.utils.PatternKit;
 import com.my.blog.website.utils.TaleUtils;
@@ -39,7 +37,7 @@ import java.util.List;
  * 首页
  * Created by Administrator on 2017/3/8 008.
  */
-@Controller
+/* @Controller
 public class IndexController extends BaseController {
     private static final Logger LOGGER = LoggerFactory.getLogger(IndexController.class);
 
@@ -55,19 +53,15 @@ public class IndexController extends BaseController {
     @Resource
     private ISiteService siteService;
 
-    @Resource
-    private IQuestionaireDiscService questionaireDiscService;
-
     /**
      * 首页
      *
      * @return
      */
     @GetMapping(value = "/")
-    public String index(HttpServletRequest request, @RequestParam(value = "limit", defaultValue = "3") int limit) {
+    public String index(HttpServletRequest request, @RequestParam(value = "limit", defaultValue = "12") int limit) {
         return this.index(request, 1, limit);
     }
-
 
     /**
      * 首页分页
@@ -78,10 +72,10 @@ public class IndexController extends BaseController {
      * @return 主页
      */
     @GetMapping(value = "page/{p}")
-    public String index(HttpServletRequest request, @PathVariable int p, @RequestParam(value = "limit", defaultValue = "3") int limit) {
+    public String index(HttpServletRequest request, @PathVariable int p, @RequestParam(value = "limit", defaultValue = "12") int limit) {
         p = p < 0 || p > WebConst.MAX_PAGE ? 1 : p;
-        PageInfo<DiscQuestionItemVo> questionItemGroups = questionaireDiscService.getQuestions(p, limit);
-        request.setAttribute("questionItemGroups", questionItemGroups);
+        PageInfo<ContentVo> articles = contentService.getContents(p, limit);
+        request.setAttribute("articles", articles);
         if (p > 1) {
             this.title(request, "第" + p + "页");
         }
@@ -441,24 +435,5 @@ public class IndexController extends BaseController {
         return false;
     }
 
-
-    /**
-     * 首页分页
-     *
-     * @param request request
-     * @param p       第几页
-     * @param limit   每页大小
-     * @return 主页
-     */
-//    @GetMapping(value = "page/{p}")
-    public String index1(HttpServletRequest request, @PathVariable int p, @RequestParam(value = "limit", defaultValue = "12") int limit) {
-        p = p < 0 || p > WebConst.MAX_PAGE ? 1 : p;
-        PageInfo<ContentVo> articles = contentService.getContents(p, limit);
-        request.setAttribute("articles", articles);
-        if (p > 1) {
-            this.title(request, "第" + p + "页");
-        }
-        return this.render("index");
-    }
-
 }
+*/
