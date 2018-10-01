@@ -1,55 +1,67 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<!--<div th:replace="themes/default/header::header(null,null)"></div> -->
+<div th:replace="themes/default/header::header(null,null)"></div>
 
 <body>
 <div>
 
-    <form action="#" th:action="@{/questionaire/disc/answerQuestions}" th:object="${discFormAns}" method="post">
-        <table>
-            <tr>
-                <th></th>
-                <th></th>
-                <th>最符合您</th>
-                <th>最不符合您</th>
-            </tr>
-        </table>
-        <div th:each="question: ${questionItemGroups.list}">
+    <form th:id="questions" action="#" th:action="@{/questionaire/disc/answerQuestions}" th:object="${discFormAns}"
+          method="post">
+        <div th:class="question" th:id="${question.questionNumber}" th:each="question: ${questionItemGroups.list}">
             <table>
                 <tr>
-                    <!--<th>-->
-                        <!--<th:block th:text="${question.questionNumber}"/>-->
-                    <!--</th>-->
-                    <th>
-                        <th:block th:text="${question.questionContent}"/>
-                    </th>
+                    <th:block th:text="${question.questionContent}"/>
                 </tr>
-                <div th:each="lineItem: ${question.lineItemList}">
                 <tr>
-                    <td>
-                        <th:block th:text="${lineItem.lineNumber}"></th:block>
-                        <th:block th:text="${lineItem.lineContent}"></th:block>
-                    </td>
-                    <td>
-                        <input type="radio" th:name="'most'+${question.questionNumber}" th:value="${lineItem.most}"/>
-                    </td>
-                    <td>
-                        <input type="radio" th:name="'least'+${question.questionNumber}" th:value="${lineItem.least}"/>
-                    </td>
+                    <th></th>
+                    <th></th>
+                    <th>最符合您</th>
+                    <th>最不符合您</th>
+                    <th></th>
                 </tr>
+                <div th:class="question-line" th:each="lineItem: ${question.lineItemList}">
+                    <tr>
+                        <td>
+                            <th:block th:text="${lineItem.lineNumber}"></th:block>
+                            <th:block th:text="${lineItem.lineContent}"></th:block>
+                        </td>
+                        <td>
+                            <th:block th:text="${lineItem.most}"></th:block>
+                        </td>
+                        <td>
+                            <input th:class="question-line-most" type="radio" th:name="'most'+${question.questionNumber}"
+                                   th:value="${lineItem.most}"/>
+                        </td>
+                        <td>
+                            <th:block th:text="${lineItem.least}"></th:block>
+                        </td>
+                        <td>
+                            <input th:class="question-line-least" type="radio" th:name="'least'+${question.questionNumber}"
+                                   th:value="${lineItem.least}"/>
+                        </td>
+                    </tr>
+                    <!--<tr></tr>-->
                 </div>
             </table>
+            <br/>
         </div>
-        <ul class="pagination">
-            <li></li>
-        </ul>
-        <!--<div class="lists-navigator clearfix">-->
-            <!--<div th:replace="comm/macros::pageNav(${questionItemGroups},'←','→','page')"></div>-->
-        <!--</div>-->
+        <nav><!-- pagination -->
+            <ul class="pagination">
+                <li>
+                    <a class="page-link" href="javascript:void(0)" aria-label="Previous" id="prev">
+                        <span aria-hidden="true">
+                            &laquo;
+                        </span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
         <p><input type="submit" value="Submit"/> <input type="reset" value="Reset"/></p>
     </form>
 </div>
-</body>
+<div th:replace="admin/footer :: footer"></div>
+<script th:src="@{/admin/js/disc.js}"></script>
 
-<!--<div th:replace="themes/default/footer::footer"></div>-->
+
+</body>
 </html>
